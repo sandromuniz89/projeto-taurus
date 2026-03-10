@@ -36,29 +36,36 @@ A solução integra um dashboard de gestão moderno diretamente ao painel do ser
 ### 👥 Clientes
 - Cadastro completo com nome, telefone, e-mail, plano, acessos e vencimento
 - Filtros por status: Todos, Ativos, Expirados, Mensais, Trimestrais, Vencendo em 7 dias
-- Busca inteligente por nome ou telefone — aceita número com `+55` colado direto do WhatsApp
-- Paginação com opções de 10, 50 ou 100 registros por página
-- Vinculação do cliente ao painel de servidor para automação completa
+- Busca inteligente por nome, telefone ou **data de vencimento** — aceita `05/04/2026` ou `04/2026`
+- Paginação com opções de **10, 50 ou 100** registros por página
+- Vinculação do cliente ao painel de servidor diretamente pelo modal de detalhes
+- Suporte a clientes cadastrados antes da integração via botão **🔗 Vincular Painel**
+- Cadastro de clientes já existentes no servidor sem gastar créditos (**Cadastro Existente**)
 
 ### 🔄 Renovação Integrada
-- Modal de renovação com seleção de número de acessos (telas)
+- **Modal de confirmação** antes de renovar — exibe o tipo de plano (Mensal/Trimestral) para validação antes de executar
+- Correção automática do tipo de plano no Firebase ao confirmar a renovação
 - Cálculo automático de créditos, valor e lucro antes de confirmar
 - Data de vencimento calculada a partir do vencimento atual — não de hoje
 - Atualização simultânea no Firebase e no painel do servidor
-- Adição e remoção de acessos com controle de créditos por plano
+- Suporte a clientes com campo `painel_username` (legado) e `painelUsername` (novo)
 
 ### 📡 Testes / Trials
 - Criação de acesso de teste diretamente pelo dashboard
-- Listagem de testes ativos com status, senha, plano, conexões e expiração
-- Botão de copiar as informações formatadas para envio direto ao cliente via WhatsApp
-- Edição de conteúdo do teste após criação
-- Ativação do teste como cliente com seleção de plano e acessos
+- **Busca em tempo real** por usuário ou telefone — ideal para localizar testes antigos entre dezenas de registros
+- Listagem de testes com status, senha, plano, conexões e expiração
+- Botão de copiar as informações formatadas para envio direto via WhatsApp
+- Ativação do teste como cliente com seleção de plano, acessos e conteúdo adulto
 - Salvamento automático no Firebase para controle persistente
 
 ### 💰 Relatórios Financeiros
-- Receita total, custo, lucro líquido e margem de lucro
-- Lucro separado por tipo de plano
-- Comparativo mensal dos últimos 6 meses
+- **Receita do Mês** — total e quantidade de clientes no mês atual
+- **Taxa de Retenção** — percentual de clientes do mês anterior que renovaram
+- **Clientes em Risco** — expirados há mais de 7 dias
+- **Margem de Lucro** — percentual sobre o histórico geral
+- **Novos vs Ativados** — cadastros novos versus ativações via teste no mês
+- Lucro separado por tipo de plano (Mensal e Trimestral)
+- Comparativo mensal dos últimos 6 meses com receita e clientes
 
 ### ⚙️ Configurações
 - Tema claro e escuro
@@ -74,11 +81,10 @@ O Projeto Taurus se conecta via **Firebase Functions** (backend seguro em nuvem)
 | Operação | Descrição |
 |----------|-----------|
 | Criar cliente | Cadastro automático no servidor ao registrar novo cliente |
-| Renovar plano | Renovação no servidor sincronizada com o dashboard |
+| Renovar plano | Renovação no servidor sincronizada com o dashboard — Mensal (30d) ou Trimestral (90d) |
 | Criar teste | Geração de acesso de teste diretamente pelo painel |
-| Adicionar acesso | Incremento de conexões com controle de créditos |
-| Remover acesso | Redução de conexões sem custo de créditos |
-| Atualizar conteúdo | Alteração de pacotes de conteúdo por cliente |
+| Bloquear / Desbloquear | Suspensão e reativação de acesso pelo modal do cliente |
+| Excluir cliente | Remoção sincronizada no servidor e no Firebase |
 | Exibir créditos | Saldo de créditos atualizado em tempo real no header |
 
 > Todas as operações são realizadas através de um proxy seguro no backend — nenhuma credencial do servidor é exposta no frontend.
@@ -96,8 +102,8 @@ Projeto Taurus/
 │   ├── firebase.js         # Conexão e operações com Firestore
 │   ├── auth.js             # Autenticação de acesso
 │   ├── dashboard.js        # Lógica do dashboard e relatórios
-│   ├── clientes.js         # Gestão de clientes
-│   ├── testes.js           # Gestão de testes/trials
+│   ├── clientes.js         # Gestão de clientes, renovação e relatórios
+│   ├── testes.js           # Gestão de testes/trials com busca
 │   ├── painel.js           # Integração com painel de servidor
 │   ├── config.js           # Configurações e personalização
 │   └── utils.js            # Funções utilitárias
