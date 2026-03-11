@@ -43,19 +43,24 @@ A solução integra um dashboard de gestão moderno diretamente ao painel do ser
 - Cadastro de clientes já existentes no servidor sem gastar créditos (**Cadastro Existente**)
 
 ### 🔄 Renovação Integrada
-- **Modal de confirmação** antes de renovar — exibe o tipo de plano (Mensal/Trimestral) para validação antes de executar
+- **Modal de confirmação** com pré-seleção do tipo e quantidade de acessos atuais do cliente
+- Seletor de acessos (1, 2 ou 3) com exibição do valor correspondente a cada opção
+- Resumo dinâmico com plano, acessos, duração e valor em destaque antes de confirmar
 - Correção automática do tipo de plano no Firebase ao confirmar a renovação
 - Cálculo automático de créditos, valor e lucro antes de confirmar
 - Data de vencimento calculada a partir do vencimento atual — não de hoje
 - Atualização simultânea no Firebase e no painel do servidor
+- **Mensagem automática via WhatsApp** após renovação com data de vencimento formatada
 - Suporte a clientes com campo `painel_username` (legado) e `painelUsername` (novo)
 
 ### 📡 Testes / Trials
 - Criação de acesso de teste diretamente pelo dashboard
+- Credenciais geradas automaticamente: **username com 9 dígitos numéricos**, **senha com 6 dígitos numéricos**
 - **Busca em tempo real** por usuário ou telefone — ideal para localizar testes antigos entre dezenas de registros
 - Listagem de testes com status, senha, plano, conexões e expiração
 - Botão de copiar as informações formatadas para envio direto via WhatsApp
 - Ativação do teste como cliente com seleção de plano, acessos e conteúdo adulto
+- **WhatsApp preenchido automaticamente** com o número cadastrado no trial ao abrir o modal de ativação
 - Salvamento automático no Firebase para controle persistente
 
 ### 💰 Relatórios Financeiros
@@ -68,9 +73,13 @@ A solução integra um dashboard de gestão moderno diretamente ao painel do ser
 - Comparativo mensal dos últimos 6 meses com receita e clientes
 
 ### ⚙️ Configurações
-- Tema claro e escuro
-- Botão de privacidade para ocultar valores financeiros na tela
-- Credenciais de acesso com troca de usuário e senha
+- **Dados da empresa** — nome, slogan, PIX, titular do PIX, telefone, e-mail e host IPTV
+- **Sincronização entre dispositivos** — todas as configurações salvas no Firebase e aplicadas em tempo real em qualquer dispositivo logado
+- **Credenciais de acesso** — troca de usuário e senha do dashboard com validação
+- **Tema** — claro e escuro com persistência local
+- **Cor de destaque** — 6 opções (Cyan, Azul, Roxo, Verde, Laranja, Rosa) sincronizadas via Firebase
+- **Botão de privacidade** — oculta todos os valores financeiros da tela com um clique
+- Créditos do painel exibidos no header com atualização automática a cada operação
 
 ---
 
@@ -82,10 +91,10 @@ O Projeto Taurus se conecta via **Firebase Functions** (backend seguro em nuvem)
 |----------|-----------|
 | Criar cliente | Cadastro automático no servidor ao registrar novo cliente |
 | Renovar plano | Renovação no servidor sincronizada com o dashboard — Mensal (30d) ou Trimestral (90d) |
-| Criar teste | Geração de acesso de teste diretamente pelo painel |
+| Criar teste | Geração de acesso de teste com username (9 dígitos) e senha (6 dígitos) |
 | Bloquear / Desbloquear | Suspensão e reativação de acesso pelo modal do cliente |
 | Excluir cliente | Remoção sincronizada no servidor e no Firebase |
-| Exibir créditos | Saldo de créditos atualizado em tempo real no header |
+| Exibir créditos | Saldo de créditos atualizado no header a cada operação realizada |
 
 > Todas as operações são realizadas através de um proxy seguro no backend — nenhuma credencial do servidor é exposta no frontend.
 
@@ -108,7 +117,9 @@ Projeto Taurus/
 │   ├── config.js           # Configurações e personalização
 │   └── utils.js            # Funções utilitárias
 └── functions/
-    └── index.js            # Firebase Functions — proxy seguro para o servidor
+    ├── index.js            # Firebase Functions — proxy seguro para o servidor
+    ├── package.json        # Dependências das Functions
+    └── package-lock.json   # Versões travadas
 ```
 
 ---
@@ -135,5 +146,5 @@ Desenvolvido por **Sandro Muniz**
 ---
 
 <div align="center">
-  <sub>Feito com ❤️ por <strong>Sandro Muniz</strong></sub>
+  <sub>Feito por <strong>Sandro Muniz</strong></sub>
 </div>
